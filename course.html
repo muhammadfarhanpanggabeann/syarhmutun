@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>محتوى الدورة</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #f7f7f7; --surface: #ffffff; --fg: #1f2421; --muted: #6f7772; --line: #e4e7e5;
+  --green: #1b6a2a; --green-soft: #e3efe5; --on-green: #ffffff;
+  --track: #dfe3e0;
+  --font: "Tajawal", "Noto Sans Arabic", system-ui, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121513; --surface: #1b1f1c; --fg: #eef2ee; --muted: #9aa39d; --line: #2b312d;
+    --green: #6fc27d; --green-soft: #223a27; --on-green: #0f1a11; --track: #2b312d; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121513; --surface: #1b1f1c; --fg: #eef2ee; --muted: #9aa39d; --line: #2b312d;
+  --green: #6fc27d; --green-soft: #223a27; --on-green: #0f1a11; --track: #2b312d; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 16px;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+[hidden] { display: none !important; }
+button { font-family: inherit; }
+
+/* Top bar */
+.bar {
+  position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 8px;
+  background: var(--surface); border-bottom: 1px solid var(--line);
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+  padding: calc(env(safe-area-inset-top, 0px) + 10px) max(12px, env(safe-area-inset-right, 0px)) 10px max(12px, env(safe-area-inset-left, 0px));
+}
+.bar h1 { flex: 1; margin: 0; text-align: center; font-size: 20px; font-weight: 700; }
+.back, .bar .sp { all: unset; box-sizing: border-box; width: 44px; height: 44px; flex: none; }
+.back { cursor: pointer; display: grid; place-items: center; border-radius: 50%; color: var(--fg); transition: transform .15s ease, background-color .2s ease; }
+.back:hover { background: var(--green-soft); }
+.back:active { transform: scale(.9); }
+.back:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+.back svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+[dir="ltr"] .back svg { transform: scaleX(-1); }
+
+/* Summary */
+.summary { background: var(--surface); border-bottom: 1px solid var(--line); margin-top: 14px; border-top: 1px solid var(--line); padding: 16px max(16px, env(safe-area-inset-right, 0px)) 18px max(16px, env(safe-area-inset-left, 0px)); }
+.sum-top { display: flex; align-items: center; gap: 14px; }
+.thumb { width: 92px; height: 92px; flex: none; border-radius: 10px; background: var(--green-soft); object-fit: cover; }
+.sum-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.sum-info h2 { margin: 0; font-size: 18px; font-weight: 500; line-height: 1.5; text-wrap: balance; }
+.sum-meta { display: flex; flex-wrap: wrap; gap: 6px 16px; color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+.sum-meta span { display: inline-flex; align-items: center; gap: 5px; }
+.sum-meta svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sum-meta .ok svg { color: var(--green); }
+.progress { margin-top: 14px; height: 8px; border-radius: 4px; background: var(--track); overflow: hidden; }
+.progress i { display: block; height: 100%; width: 0%; background: var(--green); border-radius: 4px; transition: width .4s ease; }
+
+/* Contents */
+.contents { padding: 22px max(16px, env(safe-area-inset-right, 0px)) 32px max(16px, env(safe-area-inset-left, 0px)); }
+.contents h3 { margin: 0 0 6px; font-size: 21px; font-weight: 700; }
+.contents .total { margin: 0 0 18px; color: var(--muted); font-size: 16px; font-variant-numeric: tabular-nums; }
+.sections { display: flex; flex-direction: column; gap: 14px; }
+.sec { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 1px 4px rgba(0,0,0,.08); overflow: hidden; animation: secin .3s ease-out backwards; }
+@keyframes secin { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.sec-head {
+  all: unset; box-sizing: border-box; cursor: pointer; width: 100%; min-height: 84px;
+  display: flex; align-items: center; gap: 14px; padding: 14px 16px; transition: background-color .2s ease, transform .15s ease;
+}
+.sec-head:active { transform: scale(.985); }
+.sec-head:focus-visible { outline: 2px solid var(--green); outline-offset: -2px; border-radius: 18px; }
+.num { flex: none; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--green-soft); color: var(--green); font-weight: 700; font-size: 18px; font-variant-numeric: tabular-nums; }
+.sec-txt { flex: 1; min-width: 0; }
+.sec-txt b { display: block; font-size: 19px; font-weight: 700; line-height: 1.4; }
+.sec-txt small { display: block; margin-top: 2px; color: var(--muted); font-size: 15px; font-variant-numeric: tabular-nums; }
+.pct { flex: none; display: inline-flex; align-items: center; gap: 6px; color: var(--green); font-weight: 700; font-size: 16px; font-variant-numeric: tabular-nums; }
+.pct svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s ease; }
+.sec.open .pct svg { transform: rotate(180deg); }
+.sec-body { border-top: 1px solid var(--line); padding: 18px 16px; }
+.empty { margin: 0; text-align: center; color: var(--muted); font-size: 14px; }
+
+
+/* Translate */
+.back.tr { color: var(--green); }
+[dir="ltr"] .back.tr svg { transform: none; }
+.back.tr:active svg { transform: rotate(-12deg) scale(1.1); }
+.back.tr svg { transition: transform .35s ease; }
+.overlay { position: fixed; inset: 0; z-index: 70; background: transparent; }
+.sheet {
+  position: fixed; z-index: 71; top: calc(env(safe-area-inset-top, 0px) + 58px);
+  inset-inline-end: max(12px, env(safe-area-inset-left, 0px));
+  width: min(210px, calc(100% - 32px)); max-height: min(246px, calc(100% - 140px));
+  padding: 6px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.14); overflow: hidden; display: flex; flex-direction: column;
+  transform-origin: top center; animation: pop .16s ease-out;
+}
+@keyframes pop { from { transform: scale(.96); opacity: 0; } to { transform: none; opacity: 1; } }
+.overlay:not(.open), .sheet:not(.open) { display: none !important; }
+.langs { overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+.lang {
+  all: unset; box-sizing: border-box; cursor: pointer; width: 100%; min-height: 44px; padding-inline: 12px; border-radius: 10px;
+  display: flex; align-items: center; gap: 12px; font-family: var(--font); color: var(--fg); font-size: 15px;
+  transition: transform .15s ease, background-color .2s ease;
+}
+.lang:hover, .lang[aria-checked="true"] { background: var(--green-soft); }
+.lang:active { transform: scale(.97); }
+.lang:focus-visible { outline: 2px solid var(--green); outline-offset: -2px; }
+.lang .native { flex: 1; min-width: 0; }
+.lang[aria-checked="true"] .native { color: var(--green); font-weight: 500; }
+.lang .tick { width: 18px; height: 18px; fill: none; stroke: var(--green); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; visibility: hidden; }
+.lang[aria-checked="true"] .tick { visibility: visible; animation: tickin .3s cubic-bezier(.3,1.5,.5,1); }
+@keyframes tickin { from { transform: scale(0) rotate(-30deg); } to { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .sheet, .lang .tick, .sec, .progress i, .pct svg, .back, .sec-head { animation: none; transition: none; } }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <button class="back" id="back" type="button" aria-label="رجوع"><svg viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6"/></svg></button>
+  <h1 id="barTitle">محتوى الدورة</h1>
+  <button class="back tr" id="translate" type="button" aria-haspopup="dialog" title="ترجمة" aria-label="ترجمة"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></button>
+</header>
+
+<main>
+  <section class="summary" aria-label="ملخص الدورة">
+    <div class="sum-top">
+      <img class="thumb" id="thumb" alt="" hidden>
+      <div class="thumb" id="thumbPh" aria-hidden="true"></div>
+      <div class="sum-info">
+        <h2 id="cTitle" dir="auto"></h2>
+        <div class="sum-meta">
+          <span id="cLessons"><svg viewBox="0 0 24 24"><path d="M12 6.500C10.300 5.200 8 4.500 4 4.500V18c4 0 6.300.7 8 2 1.700-1.300 4-2 8-2V4.500c-4 0-6.300.7-8 2zM12 6.500V20"/></svg><i></i></span>
+          <span class="ok" id="cDone"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12.500 3 3 5-6"/></svg><i></i></span>
+        </div>
+      </div>
+    </div>
+    <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="bar"></i></div>
+  </section>
+
+  <section class="contents">
+    <h3 id="hContents">محتوى الدورة</h3>
+    <p class="total" id="total"></p>
+    <div class="sections" id="sections"></div>
+  </section>
+</main>
+
+<div class="overlay" id="overlay"></div>
+<section class="sheet" id="sheet" role="dialog" aria-label="اللغة"><div class="langs" id="langs" role="radiogroup" aria-label="اللغة"></div></section>
+
+<script>
+(function () {
+  var RTL = ["ar", "ur"];
+  var UI = {
+    ar: { tr: "ترجمة", page: "محتوى الدورة", back: "رجوع", lesson: "درس", quiz: "اختبار", done: "مكتمل", none: "لا توجد دروس بعد" },
+    id: { tr: "Terjemahkan", page: "Isi Kursus", back: "Kembali", lesson: "pelajaran", quiz: "kuis", done: "selesai", none: "Belum ada pelajaran" },
+    en: { tr: "Translate", page: "Course Content", back: "Back", lesson: "lessons", quiz: "quizzes", done: "complete", none: "No lessons yet" },
+    tr: { tr: "Çevir", page: "Ders İçeriği", back: "Geri", lesson: "ders", quiz: "test", done: "tamamlandı", none: "Henüz ders yok" },
+    ur: { tr: "ترجمہ", page: "کورس کا مواد", back: "واپس", lesson: "سبق", quiz: "کوئز", done: "مکمل", none: "ابھی کوئی سبق نہیں" },
+    fr: { tr: "Traduire", page: "Contenu du cours", back: "Retour", lesson: "leçons", quiz: "quiz", done: "terminé", none: "Aucune leçon pour le moment" },
+    es: { tr: "Traducir", page: "Contenido del curso", back: "Volver", lesson: "lecciones", quiz: "pruebas", done: "completado", none: "Aún no hay lecciones" },
+    zh: { tr: "翻译", page: "课程内容", back: "返回", lesson: "课", quiz: "测验", done: "已完成", none: "暂无课程" },
+    ja: { tr: "翻訳", page: "コース内容", back: "戻る", lesson: "レッスン", quiz: "クイズ", done: "完了", none: "レッスンはまだありません" }
+  };
+  // Struktur bagian (judul per bahasa; bahasa lain memakai bahasa Arab). Isi pelajaran dikosongkan dulu.
+  var SECTIONS = [
+    { lessons: 8, quizzes: 8, titles: { ar: "المقدمة", id: "Pendahuluan", en: "Introduction" } }
+  ];
+  var lang = "ar";
+  try { var l = localStorage.getItem("lang"); if (l && UI[l]) lang = l; } catch (e) {}
+  var course = {};
+  try { course = JSON.parse(sessionStorage.getItem("course") || "{}") || {}; } catch (e) {}
+  var totalLessons = course.lessons || 63;
+
+  function u(k) { return UI[lang][k]; }
+  function nf(n) { try { return new Intl.NumberFormat(lang === "ar" ? "ar-EG-u-nu-latn" : lang).format(n); } catch (e) { return String(n); } }
+  var $ = function (id) { return document.getElementById(id); };
+
+  function render() {
+    var de = document.documentElement;
+    de.lang = lang; de.dir = RTL.indexOf(lang) > -1 ? "rtl" : "ltr";
+    document.title = u("page");
+    $("barTitle").textContent = u("page");
+    $("hContents").textContent = u("page");
+    $("back").setAttribute("aria-label", u("back"));
+    $("translate").setAttribute("aria-label", u("tr")); $("translate").title = u("tr");
+    sheet.setAttribute("aria-label", u("tr")); langsBox.setAttribute("aria-label", u("tr"));
+
+    var title = course.title || "";
+    $("cTitle").textContent = title;
+    if (course.img) { var im = $("thumb"); im.src = course.img; im.hidden = false; $("thumbPh").hidden = true; }
+    else { $("thumb").remove(); }
+
+    var doneCount = 0, pct = 0;
+    $("cLessons").lastElementChild.textContent = nf(doneCount) + "/" + nf(totalLessons) + " " + u("lesson");
+    $("cDone").lastElementChild.textContent = nf(pct) + "% " + u("done");
+    $("bar").style.width = pct + "%";
+    document.querySelector(".progress").setAttribute("aria-valuenow", pct);
+
+    var sumL = 0, sumQ = 0;
+    SECTIONS.forEach(function (s) { sumL += s.lessons; sumQ += s.quizzes; });
+    $("total").textContent = nf(sumL) + " " + u("lesson") + " • " + nf(sumQ) + " " + u("quiz");
+
+    var chev = '<svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>';
+    $("sections").innerHTML = SECTIONS.map(function (s, i) {
+      var name = s.titles[lang] || s.titles.ar;
+      return '<article class="sec" style="animation-delay:' + (i * 50) + 'ms">' +
+        '<button type="button" class="sec-head" aria-expanded="false" aria-controls="b' + i + '">' +
+          '<span class="num">' + nf(i + 1) + '</span>' +
+          '<span class="sec-txt"><b>' + name + '</b><small>' + nf(s.lessons) + ' ' + u("lesson") + ' • ' + nf(s.quizzes) + ' ' + u("quiz") + '</small></span>' +
+          '<span class="pct">' + nf(0) + '%' + chev + '</span>' +
+        '</button>' +
+        '<div class="sec-body" id="b' + i + '" hidden><p class="empty">' + u("none") + '</p></div>' +
+      '</article>';
+    }).join("");
+  }
+
+
+  var languages = [["ar","العربية"],["id","Bahasa Indonesia"],["en","English"],["tr","Türkçe"],["ur","اردو"],["fr","Français"],["es","Español"],["zh","中文"],["ja","日本語"]];
+  var trBtn = $("translate"), overlay = $("overlay"), sheet = $("sheet"), langsBox = $("langs");
+  var tick = '<svg class="tick" viewBox="0 0 24 24"><path d="m5 12.500 4.500 4.500L19 7.500"/></svg>';
+  function langName(l) {
+    var name = l[1];
+    try { var n = new Intl.DisplayNames([lang], { type: "language" }).of(l[0]); if (n) name = n; } catch (e) {}
+    if (["ar", "ur", "zh"].indexOf(lang) < 0) name = name.charAt(0).toLocaleUpperCase(lang) + name.slice(1);
+    return name;
+  }
+  function renderLangs() {
+    langsBox.innerHTML = languages.map(function (l) {
+      return '<button type="button" class="lang" role="radio" data-code="' + l[0] + '" aria-checked="' + (l[0] === lang) + '"><span class="native">' + langName(l) + '</span>' + tick + '</button>';
+    }).join("");
+  }
+  function openSheet() {
+    renderLangs(); overlay.classList.add("open"); sheet.classList.add("open");
+    var cur = langsBox.querySelector('[aria-checked="true"]'); if (cur) cur.focus();
+  }
+  function closeSheet() { overlay.classList.remove("open"); sheet.classList.remove("open"); trBtn.focus(); }
+  trBtn.addEventListener("click", openSheet);
+  overlay.addEventListener("click", closeSheet);
+  langsBox.addEventListener("click", function (e) {
+    var b = e.target.closest(".lang"); if (!b) return;
+    lang = b.dataset.code;
+    try { localStorage.setItem("lang", lang); } catch (e2) {}
+    closeSheet(); render();
+  });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && sheet.classList.contains("open")) closeSheet(); });
+  render();
+
+  $("sections").addEventListener("click", function (e) {
+    var h = e.target.closest(".sec-head"); if (!h) return;
+    var sec = h.parentNode, body = sec.querySelector(".sec-body");
+    var open = h.getAttribute("aria-expanded") !== "true";
+    h.setAttribute("aria-expanded", open);
+    sec.classList.toggle("open", open);
+    body.hidden = !open;
+  });
+
+  $("back").addEventListener("click", function () {
+    if (history.length > 1) history.back(); else location.href = "index.html";
+  });
+})();
+</script>
+</body>
+</html>
