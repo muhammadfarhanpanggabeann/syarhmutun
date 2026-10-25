@@ -326,6 +326,25 @@ nav button[aria-selected="true"] svg { animation: iconpop .38s cubic-bezier(.3,1
   .top button, .tg, .chip, .lang, .dclose, .dpdf, .dgo, .card, .top svg, .dclose svg { transition: none; }
   .tg, .chip, .lang .tick, .card { animation: none !important; }
 }
+/* Language-robust layout */
+html[lang="zh"], html[lang="ja"] { --font: "Tajawal", system-ui, "PingFang SC", "Hiragino Sans", "Noto Sans CJK SC", "Noto Sans CJK JP", "Microsoft YaHei", "Yu Gothic", sans-serif; }
+html[lang="zh"] body, html[lang="ja"] body { line-height: 1.6; }
+body { overflow-wrap: break-word; }
+nav button { min-width: 0; }
+nav button > span:last-child { max-width: 100%; padding-inline: 2px; font-size: 12.5px; line-height: 1.25; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.toggles { gap: 10px; }
+.tg { flex: 1 1 auto; justify-content: center; white-space: nowrap; padding-inline: 16px; min-width: 0; }
+.bar { flex-wrap: wrap; }
+.sort { flex: 1 1 150px; min-width: 0; }
+.sort select { width: 100%; min-width: 0; text-overflow: ellipsis; }
+.count { white-space: nowrap; }
+.card h3 { overflow-wrap: break-word; hyphens: auto; line-height: 1.5; }
+.dstats { flex-wrap: wrap; gap: 10px 16px; }
+.dstat { white-space: nowrap; }
+.dbadge { max-width: 100%; }
+.dtitle { font-size: clamp(18px, 5.2vw, 22px); overflow-wrap: break-word; hyphens: auto; }
+.dpdf, .dgo { padding: 8px 16px; text-align: center; line-height: 1.3; }
+html:not([lang="ar"]):not([lang="ur"]) .dbody p { line-height: 1.65; }
 .top { position: relative; z-index: 60; }
 .overlay { z-index: 70 !important; }
 .sheet { z-index: 71 !important; }
@@ -466,7 +485,7 @@ nav button[aria-selected="true"] svg { animation: iconpop .38s cubic-bezier(.3,1
     dPanel.querySelector(".dclose").addEventListener("click", closeDetail);
     dPanel.querySelector("#dpdf").addEventListener("click", function () { if (c.pdf) window.open(c.pdf, "_blank"); });
     dPanel.querySelector("#dgo").addEventListener("click", function () {
-      try { sessionStorage.setItem("course", JSON.stringify({ title: ttl, img: c.img, lessons: c.lessons })); } catch (e) {}
+      try { sessionStorage.setItem("course", JSON.stringify({ title: c.title, titles: c.titles, img: c.img, lessons: c.lessons })); } catch (e) {}
       location.href = "course.html";
     });
   }
@@ -673,6 +692,10 @@ nav button[aria-selected="true"] svg { animation: iconpop .38s cubic-bezier(.3,1
     if (wasOpen && currentTab === "search") openDetail(idx);
   }
 
+  window.addEventListener("pageshow", function (e) {
+    if (!e.persisted) return;
+    try { var l = localStorage.getItem("lang"); if (l && I18N[l] && l !== currentLang) { currentLang = l; applyLang(); } } catch (e2) {}
+  });
   var start = "home";
   try { start = sessionStorage.getItem("tab") || "home"; } catch (e) {}
   currentTab = start;

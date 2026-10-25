@@ -115,6 +115,34 @@ button { font-family: inherit; }
 .lang .tick { width: 18px; height: 18px; fill: none; stroke: var(--green); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; visibility: hidden; }
 .lang[aria-checked="true"] .tick { visibility: visible; animation: tickin .3s cubic-bezier(.3,1.5,.5,1); }
 @keyframes tickin { from { transform: scale(0) rotate(-30deg); } to { transform: none; } }
+
+/* Lesson list */
+.sec-body { padding: 0; background: var(--bg); }
+.items { list-style: none; margin: 0; padding: 0; }
+.item { display: flex; align-items: center; gap: 14px; min-height: 66px; padding: 8px 16px; border-top: 1px solid var(--line); }
+.item:first-child { border-top: 0; }
+.ico { flex: none; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); color: var(--muted); }
+.ico svg { width: 24px; height: 24px; }
+.item .name { flex: 1; min-width: 0; font-size: 17px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.state { flex: none; width: 32px; height: 32px; display: grid; place-items: center; }
+.state svg { width: 28px; height: 28px; }
+.ring { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--muted); }
+.item.active { cursor: pointer; transition: background-color .2s ease, transform .15s ease; }
+.item.active:active { transform: scale(.985); }
+.item.active .ico { background: var(--green-soft); color: var(--green); }
+.item.locked { opacity: .5; }
+.item.locked .name { color: var(--muted); }
+.item.locked .state svg { fill: var(--muted); }
+/* Language-robust layout */
+html[lang="zh"], html[lang="ja"] { --font: "Tajawal", system-ui, "PingFang SC", "Hiragino Sans", "Noto Sans CJK SC", "Noto Sans CJK JP", "Microsoft YaHei", "Yu Gothic", sans-serif; }
+html[lang="zh"] body, html[lang="ja"] body { line-height: 1.6; }
+body { overflow-wrap: break-word; }
+.bar h1 { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sum-info h2 { overflow-wrap: break-word; hyphens: auto; }
+.sec-txt b { overflow-wrap: break-word; hyphens: auto; }
+.sec-txt small { line-height: 1.5; }
+.pct { white-space: nowrap; }
+.item .name { overflow-wrap: break-word; }
 @media (prefers-reduced-motion: reduce) { .sheet, .lang .tick, .sec, .progress i, .pct svg, .back, .sec-head { animation: none; transition: none; } }
 </style>
 </head>
@@ -156,15 +184,15 @@ button { font-family: inherit; }
 (function () {
   var RTL = ["ar", "ur"];
   var UI = {
-    ar: { tr: "ترجمة", page: "محتوى الدورة", back: "رجوع", lesson: "درس", quiz: "اختبار", done: "مكتمل", none: "لا توجد دروس بعد" },
-    id: { tr: "Terjemahkan", page: "Isi Kursus", back: "Kembali", lesson: "pelajaran", quiz: "kuis", done: "selesai", none: "Belum ada pelajaran" },
-    en: { tr: "Translate", page: "Course Content", back: "Back", lesson: "lessons", quiz: "quizzes", done: "complete", none: "No lessons yet" },
-    tr: { tr: "Çevir", page: "Ders İçeriği", back: "Geri", lesson: "ders", quiz: "test", done: "tamamlandı", none: "Henüz ders yok" },
-    ur: { tr: "ترجمہ", page: "کورس کا مواد", back: "واپس", lesson: "سبق", quiz: "کوئز", done: "مکمل", none: "ابھی کوئی سبق نہیں" },
-    fr: { tr: "Traduire", page: "Contenu du cours", back: "Retour", lesson: "leçons", quiz: "quiz", done: "terminé", none: "Aucune leçon pour le moment" },
-    es: { tr: "Traducir", page: "Contenido del curso", back: "Volver", lesson: "lecciones", quiz: "pruebas", done: "completado", none: "Aún no hay lecciones" },
-    zh: { tr: "翻译", page: "课程内容", back: "返回", lesson: "课", quiz: "测验", done: "已完成", none: "暂无课程" },
-    ja: { tr: "翻訳", page: "コース内容", back: "戻る", lesson: "レッスン", quiz: "クイズ", done: "完了", none: "レッスンはまだありません" }
+    ar: { tr: "ترجمة", ln: "الدرس", qn: "الاختبار", page: "محتوى الدورة", back: "رجوع", lesson: "درس", quiz: "اختبار", done: "مكتمل", none: "لا توجد دروس بعد" },
+    id: { tr: "Terjemahkan", ln: "Pelajaran", qn: "Kuis", page: "Isi Kursus", back: "Kembali", lesson: "pelajaran", quiz: "kuis", done: "selesai", none: "Belum ada pelajaran" },
+    en: { tr: "Translate", ln: "Lesson", qn: "Quiz", page: "Course Content", back: "Back", lesson: "lessons", quiz: "quizzes", done: "complete", none: "No lessons yet" },
+    tr: { tr: "Çevir", ln: "Ders", qn: "Test", page: "Ders İçeriği", back: "Geri", lesson: "ders", quiz: "test", done: "tamamlandı", none: "Henüz ders yok" },
+    ur: { tr: "ترجمہ", ln: "سبق", qn: "کوئز", page: "کورس کا مواد", back: "واپس", lesson: "سبق", quiz: "کوئز", done: "مکمل", none: "ابھی کوئی سبق نہیں" },
+    fr: { tr: "Traduire", ln: "Leçon", qn: "Quiz", page: "Contenu du cours", back: "Retour", lesson: "leçons", quiz: "quiz", done: "terminé", none: "Aucune leçon pour le moment" },
+    es: { tr: "Traducir", ln: "Lección", qn: "Prueba", page: "Contenido del curso", back: "Volver", lesson: "lecciones", quiz: "pruebas", done: "completado", none: "Aún no hay lecciones" },
+    zh: { tr: "翻译", ln: "课程", qn: "测验", page: "课程内容", back: "返回", lesson: "课", quiz: "测验", done: "已完成", none: "暂无课程" },
+    ja: { tr: "翻訳", ln: "レッスン", qn: "クイズ", page: "コース内容", back: "戻る", lesson: "レッスン", quiz: "クイズ", done: "完了", none: "レッスンはまだありません" }
   };
   // Struktur bagian (judul per bahasa; bahasa lain memakai bahasa Arab). Isi pelajaran dikosongkan dulu.
   var SECTIONS = [
@@ -180,6 +208,25 @@ button { font-family: inherit; }
   function nf(n) { try { return new Intl.NumberFormat(lang === "ar" ? "ar-EG-u-nu-latn" : lang).format(n); } catch (e) { return String(n); } }
   var $ = function (id) { return document.getElementById(id); };
 
+  var ICON_PLAY = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M10 8.500v7l6-3.500z" fill="#fff"/></svg>';
+  var ICON_Q = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M9.500 9.500a2.500 2.500 0 1 1 3.600 2.200c-.7.400-1.100.9-1.100 1.600" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16.800" r="1.200" fill="#fff"/></svg>';
+  var ICON_LOCK = '<svg viewBox="0 0 24 24"><path d="M7 10V7.500a5 5 0 0 1 10 0V10h.5A1.500 1.500 0 0 1 19 11.500v8A1.500 1.500 0 0 1 17.500 21h-11A1.500 1.500 0 0 1 5 19.500v-8A1.500 1.500 0 0 1 6.500 10zm2 0h6V7.500a3 3 0 0 0-6 0z"/></svg>';
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  function itemsHTML(s) {
+    var rows = [], n = Math.max(s.lessons, s.quizzes), k, first = true;
+    for (k = 1; k <= n; k++) {
+      if (k <= s.lessons) { rows.push({ t: "l", n: k, active: first }); first = false; }
+      if (k <= s.quizzes) rows.push({ t: "q", n: k, active: false });
+    }
+    return '<ul class="items">' + rows.map(function (r) {
+      var label = (r.t === "l" ? u("ln") : u("qn")) + "-" + pad(r.n);
+      return '<li class="item ' + (r.active ? "active" : "locked") + '" data-t="' + r.t + '" data-n="' + r.n + '"' + (r.active ? ' tabindex="0" role="button"' : ' aria-disabled="true"') + '>' +
+        '<span class="ico">' + (r.t === "l" ? ICON_PLAY : ICON_Q) + '</span>' +
+        '<span class="name" dir="auto">' + label + '</span>' +
+        '<span class="state">' + (r.active ? '<i class="ring"></i>' : ICON_LOCK) + '</span></li>';
+    }).join("") + '</ul>';
+  }
+  function titleOf() { return (course.titles && course.titles[lang]) || course.title || ""; }
   function render() {
     var de = document.documentElement;
     de.lang = lang; de.dir = RTL.indexOf(lang) > -1 ? "rtl" : "ltr";
@@ -190,7 +237,7 @@ button { font-family: inherit; }
     $("translate").setAttribute("aria-label", u("tr")); $("translate").title = u("tr");
     sheet.setAttribute("aria-label", u("tr")); langsBox.setAttribute("aria-label", u("tr"));
 
-    var title = course.title || "";
+    var title = titleOf();
     $("cTitle").textContent = title;
     if (course.img) { var im = $("thumb"); im.src = course.img; im.hidden = false; $("thumbPh").hidden = true; }
     else { $("thumb").remove(); }
@@ -214,7 +261,7 @@ button { font-family: inherit; }
           '<span class="sec-txt"><b>' + name + '</b><small>' + nf(s.lessons) + ' ' + u("lesson") + ' • ' + nf(s.quizzes) + ' ' + u("quiz") + '</small></span>' +
           '<span class="pct">' + nf(0) + '%' + chev + '</span>' +
         '</button>' +
-        '<div class="sec-body" id="b' + i + '" hidden><p class="empty">' + u("none") + '</p></div>' +
+        '<div class="sec-body" id="b' + i + '" hidden>' + itemsHTML(s) + '</div>' +
       '</article>';
     }).join("");
   }
@@ -249,7 +296,22 @@ button { font-family: inherit; }
   });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && sheet.classList.contains("open")) closeSheet(); });
   render();
+  window.addEventListener("pageshow", function (e) {
+    if (!e.persisted) return;
+    try { var l = localStorage.getItem("lang"); if (l && UI[l] && l !== lang) { lang = l; render(); } } catch (e2) {}
+  });
 
+  function openLesson(it) {
+    var n = parseInt(it.getAttribute("data-n"), 10) || 1;
+    location.href = "lesson.html?n=" + n;
+  }
+  $("sections").addEventListener("click", function (e) {
+    var it = e.target.closest(".item.active[data-t='l']"); if (it) openLesson(it);
+  });
+  $("sections").addEventListener("keydown", function (e) {
+    var it = e.target.closest(".item.active[data-t='l']");
+    if (it && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openLesson(it); }
+  });
   $("sections").addEventListener("click", function (e) {
     var h = e.target.closest(".sec-head"); if (!h) return;
     var sec = h.parentNode, body = sec.querySelector(".sec-body");
