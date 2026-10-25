@@ -83,6 +83,9 @@ main { flex: 1; }
 .vplay:active .play { transform: scale(.92); }
 .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
+.abox { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #111; }
+.abox iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
 /* Bottom bar */
 .foot {
   position: sticky; bottom: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 8px;
@@ -176,7 +179,8 @@ body { overflow-wrap: break-word; }
     <p class="video-cap" id="vcap" data-k="novideo" hidden></p>
   </section>
   <section class="panel" id="p-audio" role="tabpanel" aria-labelledby="t-audio" hidden>
-    <p class="empty"><svg viewBox="0 0 24 24"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4.500" height="6.500" rx="1.500"/><rect x="16.500" y="14" width="4.500" height="6.500" rx="1.500"/></svg><span data-k="noaudio"></span></p>
+    <div class="abox" id="abox" hidden></div>
+    <p class="empty" id="aempty"><svg viewBox="0 0 24 24"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4.500" height="6.500" rx="1.500"/><rect x="16.500" y="14" width="4.500" height="6.500" rx="1.500"/></svg><span data-k="noaudio"></span></p>
   </section>
   <section class="panel" id="p-pdf" role="tabpanel" aria-labelledby="t-pdf" hidden>
     <p class="empty"><svg viewBox="0 0 24 24"><path d="M6 2h8l6 6v14H6z"/><path d="M14 2v6h6M9 14h8M9 18h6"/></svg><span data-k="nopdf"></span></p>
@@ -268,12 +272,32 @@ body { overflow-wrap: break-word; }
   }
   vbtn.addEventListener("click", playVideo);
 
+  /* Audio (Google Drive preview) */
+  var AUDIOS = { 1: "16rXq2DDs7Bh4dgZGKQ5XZO7p3LqcEpen" };
+  var aid = AUDIOS[n] || "";
+  var abox = $("abox");
+  function mountAudio() {
+    if (!aid || abox.querySelector("iframe")) return;
+    var f = document.createElement("iframe");
+    f.src = "https://drive.google.com/file/d/" + aid + "/preview";
+    f.title = $("lTitle").textContent;
+    f.allow = "autoplay; fullscreen";
+    f.referrerPolicy = "strict-origin-when-cross-origin";
+    abox.appendChild(f); abox.hidden = false; $("aempty").hidden = true;
+  }
+  function unmountAudio() {
+    var f = abox.querySelector("iframe");
+    if (f) f.remove();
+    if (aid) { abox.hidden = true; $("aempty").hidden = true; }
+  }
+
   /* Type tabs */
   var currentType = "video";
   $("types").addEventListener("click", function (e) {
     var b = e.target.closest(".type"); if (!b) return;
     if (b.dataset.t !== "video") resetVideo();
     currentType = b.dataset.t;
+    if (currentType === "audio") mountAudio(); else unmountAudio();
     Array.prototype.forEach.call(document.querySelectorAll(".type"), function (o) { o.setAttribute("aria-selected", o === b ? "true" : "false"); });
     ["video", "audio", "pdf"].forEach(function (t) { $("p-" + t).hidden = t !== currentType; });
     $("badge").textContent = u(currentType);
