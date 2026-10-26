@@ -1,5 +1,5 @@
 /* Syarhul Mutun - service worker */
-var VERSION = "v1";
+var VERSION = "v2";
 var CACHE = "syarhul-mutun-" + VERSION;
 var SHELL = [
   "./",
@@ -33,7 +33,7 @@ self.addEventListener("activate", function (e) {
 
 function cacheable(url) {
   if (url.origin === self.location.origin) return true;
-  return url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com";
+  return url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com" || url.hostname === "cdnjs.cloudflare.com";
 }
 
 self.addEventListener("fetch", function (e) {
