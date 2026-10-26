@@ -1,7 +1,8 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" translate="no" class="notranslate">
 <head>
 <meta charset="utf-8">
+<meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>تطبيق طلب العلم</title>
@@ -717,6 +718,150 @@ html:not([lang="ar"]):not([lang="ur"]) .dbody p { line-height: 1.65; }
 if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
   window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
 }
+</script>
+
+<!-- ===== Tombol install app (muncul hanya jika belum diinstal) ===== -->
+<style>
+.ib-back { position: fixed; inset: 0; z-index: 90; background: rgba(0,0,0,.58); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); opacity: 0; transition: opacity .35s ease; }
+.ib-back.open { opacity: 1; }
+.ib-sheet {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 91; margin: 0 auto; max-width: 480px;
+  padding: 30px 24px calc(env(safe-area-inset-bottom, 0px) + 22px);
+  border: 1px solid rgba(212,175,55,.38); border-bottom: 0; border-radius: 32px 32px 0 0;
+  background: radial-gradient(120% 90% at 50% 0%, #1a5632 0%, #0d2e1b 52%, #07160d 100%);
+  color: #f6f1e0; text-align: center; font-family: var(--font, "Tajawal", system-ui, sans-serif);
+  box-shadow: 0 -24px 70px rgba(0,0,0,.55), inset 0 1px 0 rgba(243,217,139,.4);
+  transform: translateY(106%); transition: transform .5s cubic-bezier(.2,.85,.25,1);
+}
+.ib-sheet.open { transform: translateY(0); }
+.ib-sheet::before { content: ""; position: absolute; top: 9px; left: 50%; width: 42px; height: 4px; margin-left: -21px; border-radius: 4px; background: linear-gradient(90deg, transparent, #d4af37, transparent); opacity: .8; }
+.ib-x { all: unset; box-sizing: border-box; cursor: pointer; position: absolute; top: 16px; inset-inline-end: 16px; width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(255,255,255,.08); border: 1px solid rgba(212,175,55,.25); }
+.ib-x svg { width: 16px; height: 16px; fill: none; stroke: #e9d9a0; stroke-width: 2; stroke-linecap: round; }
+.ib-x:focus-visible, .ib-go:focus-visible, .ib-later:focus-visible { outline: 2px solid #f3d98b; outline-offset: 3px; }
+.ib-icon { width: 88px; height: 88px; margin: 6px auto 16px; border-radius: 26px; background: #0a0a0a; padding: 0; overflow: hidden;
+  box-shadow: 0 0 0 2px rgba(212,175,55,.85), 0 0 0 7px rgba(212,175,55,.14), 0 14px 34px rgba(0,0,0,.55), 0 0 44px rgba(212,175,55,.22); }
+.ib-icon img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.ib-title { margin: 0; font-size: 25px; font-weight: 700; line-height: 1.3; background: linear-gradient(180deg, #fff3c4, #e2bd54 60%, #c9a13a); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
+.ib-orn { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 12px auto 14px; width: 180px; }
+.ib-orn i { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(212,175,55,.75)); }
+.ib-orn i:last-child { transform: scaleX(-1); }
+.ib-orn b { width: 7px; height: 7px; transform: rotate(45deg); background: #d4af37; box-shadow: 0 0 10px rgba(212,175,55,.7); }
+.ib-sub { margin: 0 auto 18px; max-width: 340px; font-size: 15.5px; line-height: 1.8; color: rgba(246,241,224,.8); }
+.ib-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 22px; }
+.ib-chips span { display: inline-flex; align-items: center; gap: 6px; padding: 7px 13px; font-size: 13px; color: #efe3b6; border: 1px solid rgba(212,175,55,.34); border-radius: 999px; background: rgba(255,255,255,.04); }
+.ib-chips span::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: #d4af37; box-shadow: 0 0 8px rgba(212,175,55,.8); }
+.ib-go { all: unset; box-sizing: border-box; cursor: pointer; position: relative; overflow: hidden; width: 100%; min-height: 56px; display: flex; align-items: center; justify-content: center; gap: 10px; border-radius: 18px;
+  font-family: inherit; font-size: 17px; font-weight: 700; color: #1d1604; background: linear-gradient(135deg, #f7e4a0 0%, #d9b240 48%, #b8901f 100%);
+  box-shadow: 0 10px 28px rgba(212,175,55,.34), inset 0 1px 0 rgba(255,255,255,.55); transition: transform .15s ease; }
+.ib-go:active { transform: scale(.97); }
+.ib-go svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.ib-go::after { content: ""; position: absolute; top: 0; bottom: 0; width: 40%; left: -60%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.55), transparent); transform: skewX(-18deg); animation: ibShine 3.6s ease-in-out 1s infinite; }
+@keyframes ibShine { 0% { left: -60%; } 55%, 100% { left: 130%; } }
+.ib-later { all: unset; box-sizing: border-box; cursor: pointer; display: block; margin: 8px auto 0; min-height: 44px; padding: 10px 22px; font-family: inherit; font-size: 15px; color: rgba(246,241,224,.62); }
+.ib-ios { margin: 0 0 16px; padding: 14px 16px; font-size: 15px; line-height: 1.8; color: #f1e7c2; border: 1px dashed rgba(212,175,55,.5); border-radius: 16px; background: rgba(255,255,255,.04); }
+@media (prefers-reduced-motion: reduce) { .ib-sheet, .ib-back { transition: none; } .ib-go::after { animation: none; } }
+</style>
+
+<div class="ib-back" id="ibBack" hidden></div>
+<section class="ib-sheet" id="ibSheet" role="dialog" aria-modal="true" aria-labelledby="ibTitle" hidden>
+  <button class="ib-x" id="ibX" type="button" aria-label="×"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <div class="ib-icon"><img src="icons/icon-192.png" alt="" width="88" height="88"></div>
+  <h2 class="ib-title" id="ibTitle"></h2>
+  <div class="ib-orn" aria-hidden="true"><i></i><b></b><i></i></div>
+  <p class="ib-sub" id="ibSub"></p>
+  <div class="ib-chips" id="ibChips"></div>
+  <p class="ib-ios" id="ibIos" hidden></p>
+  <button class="ib-go" id="ibGo" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7.500 10.500 12 15l4.500-4.500M5 19h14"/></svg><span id="ibGoTxt"></span></button>
+  <button class="ib-later" id="ibLater" type="button"></button>
+</section>
+
+<script>
+(function () {
+  var T = {
+    ar: { title: "ثبّت التطبيق", sub: "أضف التطبيق إلى شاشتك الرئيسية لتفتح دروسك بلمسة واحدة.", chips: ["وصول سريع", "شاشة كاملة", "تحميل أسرع"], go: "تثبيت الآن", later: "لاحقًا", ios: "اضغط على زر المشاركة ثم اختر «إضافة إلى الشاشة الرئيسية».", ok: "حسنًا" },
+    id: { title: "Pasang Aplikasi", sub: "Tambahkan ke layar utama agar pelajaranmu terbuka dengan satu ketukan.", chips: ["Akses cepat", "Layar penuh", "Dimuat lebih cepat"], go: "Pasang Sekarang", later: "Nanti saja", ios: "Ketuk tombol Bagikan, lalu pilih “Tambah ke Layar Utama”.", ok: "Mengerti" },
+    en: { title: "Install the App", sub: "Add it to your home screen and open your lessons in one tap.", chips: ["Quick access", "Full screen", "Loads faster"], go: "Install now", later: "Maybe later", ios: "Tap the Share button, then choose “Add to Home Screen”.", ok: "Got it" },
+    tr: { title: "Uygulamayı Yükle", sub: "Ana ekrana ekle, derslerini tek dokunuşla aç.", chips: ["Hızlı erişim", "Tam ekran", "Daha hızlı yüklenir"], go: "Şimdi yükle", later: "Sonra", ios: "Paylaş düğmesine dokun, ardından “Ana Ekrana Ekle”yi seç.", ok: "Anladım" },
+    ur: { title: "ایپ انسٹال کریں", sub: "اسے ہوم اسکرین پر شامل کریں اور اپنے اسباق ایک ٹچ میں کھولیں۔", chips: ["فوری رسائی", "مکمل اسکرین", "تیز لوڈ"], go: "ابھی انسٹال کریں", later: "بعد میں", ios: "شیئر بٹن دبائیں، پھر «ہوم اسکرین میں شامل کریں» منتخب کریں۔", ok: "ٹھیک ہے" },
+    fr: { title: "Installer l’application", sub: "Ajoutez-la à votre écran d’accueil et ouvrez vos cours d’un seul geste.", chips: ["Accès rapide", "Plein écran", "Chargement plus rapide"], go: "Installer", later: "Plus tard", ios: "Touchez Partager, puis « Sur l’écran d’accueil ».", ok: "Compris" },
+    es: { title: "Instalar la app", sub: "Añádela a tu pantalla de inicio y abre tus lecciones con un toque.", chips: ["Acceso rápido", "Pantalla completa", "Carga más rápida"], go: "Instalar ahora", later: "Más tarde", ios: "Toca Compartir y elige «Añadir a pantalla de inicio».", ok: "Entendido" },
+    zh: { title: "安装应用", sub: "添加到主屏幕，一键打开你的课程。", chips: ["快速访问", "全屏显示", "加载更快"], go: "立即安装", later: "稍后", ios: "点按“分享”，然后选择“添加到主屏幕”。", ok: "知道了" },
+    ja: { title: "アプリをインストール", sub: "ホーム画面に追加して、ワンタップでレッスンを開けます。", chips: ["すばやくアクセス", "全画面表示", "より速く読み込み"], go: "今すぐインストール", later: "あとで", ios: "共有ボタンをタップし、「ホーム画面に追加」を選んでください。", ok: "了解" }
+  };
+  var $ = function (id) { return document.getElementById(id); };
+  var back = $("ibBack"), sheet = $("ibSheet"), deferred = null, mode = "", isOpen = false;
+  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+  function lang() {
+    var l = document.documentElement.lang;
+    try { var s = localStorage.getItem("lang"); if (s && T[s]) l = s; } catch (e) {}
+    return T[l] ? l : "ar";
+  }
+  function standalone() {
+    try {
+      return window.matchMedia("(display-mode: standalone)").matches || window.matchMedia("(display-mode: fullscreen)").matches ||
+             window.matchMedia("(display-mode: minimal-ui)").matches || window.navigator.standalone === true;
+    } catch (e) { return false; }
+  }
+  function dismissed() {
+    try {
+      if (sessionStorage.getItem("ibDismiss") === "1") return true;
+      var t = parseInt(localStorage.getItem("ibIosDismiss"), 10);
+      if (mode === "ios" && t && Date.now() - t < 7 * 864e5) return true;
+    } catch (e) {}
+    return false;
+  }
+  function paint() {
+    var x = T[lang()];
+    $("ibTitle").textContent = x.title;
+    $("ibSub").textContent = x.sub;
+    $("ibChips").innerHTML = x.chips.map(function (c) { return "<span></span>"; }).join("");
+    Array.prototype.forEach.call($("ibChips").children, function (el, i) { el.textContent = x.chips[i]; });
+    $("ibIos").textContent = x.ios;
+    $("ibGoTxt").textContent = mode === "ios" ? x.ok : x.go;
+    $("ibGo").querySelector("svg").style.display = mode === "ios" ? "none" : "";
+    $("ibLater").textContent = x.later;
+    $("ibLater").hidden = mode === "ios";
+    $("ibIos").hidden = mode !== "ios";
+    sheet.dir = back.dir = document.documentElement.dir || "rtl";
+  }
+  function show(m) {
+    if (isOpen || standalone()) return;
+    mode = m; if (dismissed()) return;
+    paint();
+    back.hidden = false; sheet.hidden = false; isOpen = true;
+    requestAnimationFrame(function () { requestAnimationFrame(function () { back.classList.add("open"); sheet.classList.add("open"); try { $("ibGo").focus({ preventScroll: true }); } catch (e) {} }); });
+  }
+  function hide() {
+    if (!isOpen) return;
+    isOpen = false; back.classList.remove("open"); sheet.classList.remove("open");
+    setTimeout(function () { back.hidden = true; sheet.hidden = true; }, 520);
+  }
+  function dismiss() {
+    try { sessionStorage.setItem("ibDismiss", "1"); if (mode === "ios") localStorage.setItem("ibIosDismiss", String(Date.now())); } catch (e) {}
+    hide();
+  }
+
+  window.addEventListener("beforeinstallprompt", function (e) {
+    e.preventDefault(); deferred = e;
+    setTimeout(function () { if (deferred) show("install"); }, 1500);
+  });
+  window.addEventListener("appinstalled", function () { deferred = null; hide(); });
+
+  $("ibGo").addEventListener("click", function () {
+    if (mode === "ios") { dismiss(); return; }
+    if (!deferred) return;
+    var d = deferred; deferred = null; hide();
+    try { d.prompt(); if (d.userChoice) d.userChoice.catch(function () {}); } catch (e) {}
+  });
+  $("ibLater").addEventListener("click", dismiss);
+  $("ibX").addEventListener("click", dismiss);
+  back.addEventListener("click", dismiss);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && isOpen) dismiss(); });
+  new MutationObserver(function () { if (isOpen) paint(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["lang", "dir"] });
+
+  if (isIOS && !standalone()) setTimeout(function () { show("ios"); }, 2000);
+})();
 </script>
 </body>
 </html>

@@ -1,7 +1,8 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" translate="no" class="notranslate">
 <head>
 <meta charset="utf-8">
+<meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>الدرس</title>
 <link rel="manifest" href="../../../../../manifest.json">
@@ -217,8 +218,7 @@ body { overflow-wrap: break-word; }
     <div class="pbox" id="pbox" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h8l6 6v14H6z"/><path d="M14 2v6h6M9 14h8M9 18h6"/></svg>
       <p class="pname" id="pname"></p>
-      <button class="pbtn" id="pRead" type="button" data-k="readpdf"></button>
-      <a class="pbtn alt" id="pOpen" target="_blank" rel="noopener" data-k="openpdf"></a>
+      <a class="pbtn" id="pOpen" data-k="openpdf"></a>
       <a class="pbtn alt" id="pDl" download data-k="dlpdf"></a>
     </div>
     <p class="empty" id="pempty"><svg viewBox="0 0 24 24"><path d="M6 2h8l6 6v14H6z"/><path d="M14 2v6h6M9 14h8M9 18h6"/></svg><span data-k="nopdf"></span></p>
@@ -246,15 +246,15 @@ body { overflow-wrap: break-word; }
 (function () {
   var RTL = ["ar", "ur"];
   var UI = {
-    ar: { lesson: "الدرس", back: "رجوع", tr: "ترجمة", video: "فيديو", audio: "صوت", pdf: "PDF", finish: "إكمال الدرس", finished: "تم إكمال الدرس", prev: "السابق", next: "التالي", novideo: "لا يوجد فيديو بعد", noaudio: "لا يوجد ملف صوتي بعد", nopdf: "لا يوجد ملف PDF بعد", openpdf: "فتح ملف PDF", dlpdf: "تحميل ملف PDF", readpdf: "قراءة الملف", pdferr: "تعذّر تحميل الملف" },
-    id: { lesson: "Pelajaran", back: "Kembali", tr: "Terjemahkan", video: "Video", audio: "Audio", pdf: "PDF", finish: "Selesaikan Pelajaran", finished: "Pelajaran Selesai", prev: "Sebelumnya", next: "Berikutnya", novideo: "Belum ada video", noaudio: "Belum ada audio", nopdf: "Belum ada PDF", openpdf: "Buka PDF", dlpdf: "Unduh PDF", readpdf: "Baca PDF", pdferr: "Gagal memuat PDF" },
-    en: { lesson: "Lesson", back: "Back", tr: "Translate", video: "Video", audio: "Audio", pdf: "PDF", finish: "Complete Lesson", finished: "Lesson Completed", prev: "Previous", next: "Next", novideo: "No video yet", noaudio: "No audio yet", nopdf: "No PDF yet", openpdf: "Open PDF", dlpdf: "Download PDF", readpdf: "Read PDF", pdferr: "Couldn't load the PDF" },
-    tr: { lesson: "Ders", back: "Geri", tr: "Çevir", video: "Video", audio: "Ses", pdf: "PDF", finish: "Dersi Tamamla", finished: "Ders Tamamlandı", prev: "Önceki", next: "Sonraki", novideo: "Henüz video yok", noaudio: "Henüz ses yok", nopdf: "Henüz PDF yok", openpdf: "PDF'yi aç", dlpdf: "PDF'yi indir", readpdf: "PDF'yi oku", pdferr: "PDF yüklenemedi" },
-    ur: { lesson: "سبق", back: "واپس", tr: "ترجمہ", video: "ویڈیو", audio: "آڈیو", pdf: "PDF", finish: "سبق مکمل کریں", finished: "سبق مکمل ہو گیا", prev: "پچھلا", next: "اگلا", novideo: "ابھی کوئی ویڈیو نہیں", noaudio: "ابھی کوئی آڈیو نہیں", nopdf: "ابھی کوئی PDF نہیں", openpdf: "PDF کھولیں", dlpdf: "PDF ڈاؤن لوڈ کریں", readpdf: "PDF پڑھیں", pdferr: "PDF لوڈ نہیں ہو سکا" },
-    fr: { lesson: "Leçon", back: "Retour", tr: "Traduire", video: "Vidéo", audio: "Audio", pdf: "PDF", finish: "Terminer la leçon", finished: "Leçon terminée", prev: "Précédent", next: "Suivant", novideo: "Pas encore de vidéo", noaudio: "Pas encore d'audio", nopdf: "Pas encore de PDF", openpdf: "Ouvrir le PDF", dlpdf: "Télécharger le PDF", readpdf: "Lire le PDF", pdferr: "Impossible de charger le PDF" },
-    es: { lesson: "Lección", back: "Volver", tr: "Traducir", video: "Video", audio: "Audio", pdf: "PDF", finish: "Completar lección", finished: "Lección completada", prev: "Anterior", next: "Siguiente", novideo: "Aún no hay video", noaudio: "Aún no hay audio", nopdf: "Aún no hay PDF", openpdf: "Abrir PDF", dlpdf: "Descargar PDF", readpdf: "Leer PDF", pdferr: "No se pudo cargar el PDF" },
-    zh: { lesson: "课程", back: "返回", tr: "翻译", video: "视频", audio: "音频", pdf: "PDF", finish: "完成课程", finished: "课程已完成", prev: "上一个", next: "下一个", novideo: "暂无视频", noaudio: "暂无音频", nopdf: "暂无 PDF", openpdf: "打开 PDF", dlpdf: "下载 PDF", readpdf: "阅读 PDF", pdferr: "无法加载 PDF" },
-    ja: { lesson: "レッスン", back: "戻る", tr: "翻訳", video: "動画", audio: "音声", pdf: "PDF", finish: "レッスンを完了", finished: "レッスン完了", prev: "前へ", next: "次へ", novideo: "動画はまだありません", noaudio: "音声はまだありません", nopdf: "PDFはまだありません", openpdf: "PDFを開く", dlpdf: "PDFをダウンロード", readpdf: "PDFを読む", pdferr: "PDFを読み込めません" }
+    ar: { lesson: "الدرس", back: "رجوع", tr: "ترجمة", video: "فيديو", audio: "صوت", pdf: "PDF", finish: "إكمال الدرس", finished: "تم إكمال الدرس", prev: "السابق", next: "التالي", novideo: "لا يوجد فيديو بعد", noaudio: "لا يوجد ملف صوتي بعد", nopdf: "لا يوجد ملف PDF بعد", openpdf: "فتح ملف PDF", dlpdf: "تحميل ملف PDF" },
+    id: { lesson: "Pelajaran", back: "Kembali", tr: "Terjemahkan", video: "Video", audio: "Audio", pdf: "PDF", finish: "Selesaikan Pelajaran", finished: "Pelajaran Selesai", prev: "Sebelumnya", next: "Berikutnya", novideo: "Belum ada video", noaudio: "Belum ada audio", nopdf: "Belum ada PDF", openpdf: "Buka PDF", dlpdf: "Unduh PDF" },
+    en: { lesson: "Lesson", back: "Back", tr: "Translate", video: "Video", audio: "Audio", pdf: "PDF", finish: "Complete Lesson", finished: "Lesson Completed", prev: "Previous", next: "Next", novideo: "No video yet", noaudio: "No audio yet", nopdf: "No PDF yet", openpdf: "Open PDF", dlpdf: "Download PDF" },
+    tr: { lesson: "Ders", back: "Geri", tr: "Çevir", video: "Video", audio: "Ses", pdf: "PDF", finish: "Dersi Tamamla", finished: "Ders Tamamlandı", prev: "Önceki", next: "Sonraki", novideo: "Henüz video yok", noaudio: "Henüz ses yok", nopdf: "Henüz PDF yok", openpdf: "PDF'yi aç", dlpdf: "PDF'yi indir" },
+    ur: { lesson: "سبق", back: "واپس", tr: "ترجمہ", video: "ویڈیو", audio: "آڈیو", pdf: "PDF", finish: "سبق مکمل کریں", finished: "سبق مکمل ہو گیا", prev: "پچھلا", next: "اگلا", novideo: "ابھی کوئی ویڈیو نہیں", noaudio: "ابھی کوئی آڈیو نہیں", nopdf: "ابھی کوئی PDF نہیں", openpdf: "PDF کھولیں", dlpdf: "PDF ڈاؤن لوڈ کریں" },
+    fr: { lesson: "Leçon", back: "Retour", tr: "Traduire", video: "Vidéo", audio: "Audio", pdf: "PDF", finish: "Terminer la leçon", finished: "Leçon terminée", prev: "Précédent", next: "Suivant", novideo: "Pas encore de vidéo", noaudio: "Pas encore d'audio", nopdf: "Pas encore de PDF", openpdf: "Ouvrir le PDF", dlpdf: "Télécharger le PDF" },
+    es: { lesson: "Lección", back: "Volver", tr: "Traducir", video: "Video", audio: "Audio", pdf: "PDF", finish: "Completar lección", finished: "Lección completada", prev: "Anterior", next: "Siguiente", novideo: "Aún no hay video", noaudio: "Aún no hay audio", nopdf: "Aún no hay PDF", openpdf: "Abrir PDF", dlpdf: "Descargar PDF" },
+    zh: { lesson: "课程", back: "返回", tr: "翻译", video: "视频", audio: "音频", pdf: "PDF", finish: "完成课程", finished: "课程已完成", prev: "上一个", next: "下一个", novideo: "暂无视频", noaudio: "暂无音频", nopdf: "暂无 PDF", openpdf: "打开 PDF", dlpdf: "下载 PDF" },
+    ja: { lesson: "レッスン", back: "戻る", tr: "翻訳", video: "動画", audio: "音声", pdf: "PDF", finish: "レッスンを完了", finished: "レッスン完了", prev: "前へ", next: "次へ", novideo: "動画はまだありません", noaudio: "音声はまだありません", nopdf: "PDFはまだありません", openpdf: "PDFを開く", dlpdf: "PDFをダウンロード" }
   };
   var $ = function (id) { return document.getElementById(id); };
   var lang = "ar";
@@ -345,7 +345,7 @@ body { overflow-wrap: break-word; }
     $("pbox").hidden = false; $("pempty").hidden = true;
   }
 
-  /* Pembaca PDF: geser horizontal kanan ke kiri, satu halaman penuh per layar */
+  /* Buka PDF: pembaca layar penuh, geser horizontal kanan ke kiri, satu halaman per layar */
   var PDFJS = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/";
   var pv = $("pv"), pvScroll = $("pvscroll"), pvBar = $("pvbar"), pvNum = $("pvnum"), pvMsg = $("pvmsg");
   var pdfDoc = null, slides = [], curPage = 0, ioRender = null, ioCount = null, pvOpen = false;
@@ -408,11 +408,11 @@ body { overflow-wrap: break-word; }
     pv.hidden = false; pvOpen = true; pvBar.classList.remove("off");
     document.documentElement.style.overflow = "hidden";
     history.pushState({ pv: 1 }, "");
-    if (pdfDoc) { return; }
+    if (pdfDoc) return;
     showMsg("…");
     loadPdfJs().then(function () {
       window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS + "pdf.worker.min.js";
-      return window.pdfjsLib.getDocument({ url: pf, disableRange: true, disableStream: true }).promise;
+      return window.pdfjsLib.getDocument({ url: pf, disableRange: true, disableStream: true, disableFontFace: true }).promise;
     }).then(function (doc) {
       pdfDoc = doc; showMsg("");
       buildSlides();
@@ -420,13 +420,18 @@ body { overflow-wrap: break-word; }
       try { start = parseInt(localStorage.getItem(pageKey), 10) || 0; } catch (x) {}
       if (start > 0 && start < doc.numPages) { slides[start].scrollIntoView({ inline: "center", block: "nearest" }); curPage = start; }
       setNum();
-    }).catch(function () { showMsg(u("pdferr")); });
+    }).catch(function () {
+      /* gagal memuat pembaca: buka PDF di browser sebagai cadangan */
+      showMsg("");
+      if (history.state && history.state.pv) history.back(); else closeViewer();
+      window.open(pf, "_blank");
+    });
   }
   function closeViewer() {
     pv.hidden = true; pvOpen = false;
     document.documentElement.style.overflow = "";
   }
-  $("pRead").addEventListener("click", openViewer);
+  $("pOpen").addEventListener("click", function (e) { e.preventDefault(); openViewer(); });
   $("pvClose").addEventListener("click", function () {
     if (history.state && history.state.pv) history.back(); else closeViewer();
   });
@@ -447,7 +452,7 @@ body { overflow-wrap: break-word; }
   var currentType = "video";
   $("types").addEventListener("click", function (e) {
     var b = e.target.closest(".type"); if (!b) return;
-    if (b.dataset.t !== "video") resetVideo();
+    if (b.dataset.t === "audio") resetVideo(); /* video tetap jalan saat pindah ke PDF */
     currentType = b.dataset.t;
     if (currentType === "audio") mountAudio(); else unmountAudio();
     Array.prototype.forEach.call(document.querySelectorAll(".type"), function (o) { o.setAttribute("aria-selected", o === b ? "true" : "false"); });
