@@ -454,7 +454,7 @@ body { overflow-wrap: break-word; }
     var b = e.target.closest(".type"); if (!b) return;
     if (b.dataset.t === "audio") resetVideo(); /* video tetap jalan saat pindah ke PDF */
     currentType = b.dataset.t;
-    if (currentType === "audio") mountAudio(); else unmountAudio();
+    if (currentType === "audio") mountAudio(); else if (currentType === "video") unmountAudio(); /* audio tetap jalan saat pindah ke PDF */
     Array.prototype.forEach.call(document.querySelectorAll(".type"), function (o) { o.setAttribute("aria-selected", o === b ? "true" : "false"); });
     ["video", "audio", "pdf"].forEach(function (t) { $("p-" + t).hidden = t !== currentType; });
     $("badge").textContent = u(currentType);
